@@ -1,32 +1,22 @@
 <template>
   <div class="container">
     <div>
-      <Logo />
-      <h1 class="title">nuxt-netlify-cms</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+      <li v-for="post of posts" :key="post.slug">
+        <NuxtLink :to="post.slug">{{ post.title }}</NuxtLink>
+      </li>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  async asyncData({ $content }) {
+    const posts = await $content('blog').fetch()
+
+    return {
+      posts,
+    }
+  },
   head() {
     return {
       script: [
@@ -42,8 +32,8 @@ export default {
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  max-width: 500px;
   text-align: center;
 }
 
